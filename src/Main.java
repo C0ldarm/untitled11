@@ -1,54 +1,80 @@
-
-
-
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        humanIMB humanIMB = new humanIMB(80,1.52);
-        System.out.println(humanIMB.Result());
+        // Fix 1: Renamed variable from `humanIMB` to `person` for clarity (Line 8)
+        HumanIMB person = new HumanIMB(80, 1.52);
+        System.out.println(person.Result());
     }
 }
-class humanIMB {
-    public double W; //Weight Human
-    public double H; // Height Human
-    private static double imb;
-    public humanIMB(double w, double h) {
-        W = w;
-        H = h;
-        imb = W / (H * H);
+
+class HumanIMB {
+    // Fix 2: Renamed `W` to `weight` and `H` to `height` for better readability (Lines 13, 14)
+    public double weight; 
+    public double height; 
+    // Fix 3: Removed `static` 
+    private double imb;
+
+    public HumanIMB(double weight, double height) {
+        // Fix 4: `height != 0` 
+        if (height <= 0) {
+            throw new IllegalArgumentException("Height must be greater than 0");
+        }
+        this.weight = weight;
+        this.height = height;
+        this.imb = weight / (height * height);
     }
-    public double takeW() {
-        return W;
+
+    public double takeWeight() { // Renamed
+        return weight;
     }
-    public void putW(double w) {
-        W = w;
-        imb = W / (H * H);
+
+    // Fix 5: Added validation for negative
+    public void putWeight(double weight) { // Renamed from `putW`
+        if (weight < 0) {
+            throw new IllegalArgumentException("Weight cannot be negative");
+        }
+        this.weight = weight;
+        this.imb = weight / (height * height);
     }
-    public double takeH() {
-        return H;
+
+    public double takeHeight() { // Renamed from `takeH` 
+        return height;
     }
-    public void putH(double h) {
-        H = h;
-        imb = W / (H * H);
+
+    // Fix 6: Added validation for `height <= 0` in `putH`
+    public void putHeight(double height) { // Renamed from `putH`
+        if (height <= 0) {
+            throw new IllegalArgumentException("Height must be greater than 0");
+        }
+        this.height = height;
+        this.imb = weight / (height * height);
     }
-    public static double takeImt() {
+
+    // Fix 7: Renamed to `getImb` and removed `static` 
+    public double getImb() {
         return imb;
     }
+
     public static String Result() {
-        String  string = null;
-        if (imb >=18.5 & imb <25) {
-            string ="Norm";
+        // Fix 8: Renamed `string` to `result` 
+        String result = null;
+        // Fix 9: Replaced `&` with `&&` 
+        if (imb >= 18.5 && imb < 25) {
+            result = "Norm";
         }
-        if (imb >=25 & imb <30) {
-            string ="Warning! ";
+        // Fix 10: Replaced `&` with `&&` 
+        if (imb >= 25 && imb < 30) {
+            result = "Warning!";
         }
-        if (imb >=30) {
-            string ="Fat";
+        // Fix 11
+        if (imb >= 30) { // No upper bound 
+            result = "Fat";
         }
-        if (imb <18.5) {
-            string ="Deficit";
+        if (imb < 18.5) {
+            result = "Deficit";
         }
-        return string;
+        // Fix 12:  avoid null 
+        return result != null ? result : "Unknown"; 
     }
 }
